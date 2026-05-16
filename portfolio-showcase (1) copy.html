@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Portfolio — Built by Claude</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;1,9..40,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c-black: #0a0a0a;
+    --c-white: #f5f3ee;
+    --c-accent: #d4ff4a;
+    --c-muted: #888;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--c-black);
+    color: var(--c-white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212,255,74,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 14vw, 11rem);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--c-white);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero h1 em {
+    color: var(--c-accent);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--c-muted);
+    margin-top: 2rem;
+    max-width: 480px;
+    line-height: 1.6;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-scroll {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+    color: var(--c-muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--c-accent), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* grid of dots background */
+  .dot-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  /* ─── SECTION TITLES ─── */
+  .section-header {
+    padding: 5rem 4rem 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--c-accent);
+    letter-spacing: 0.2em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    line-height: 1;
+    color: var(--c-white);
+  }
+
+  .section-desc {
+    max-width: 360px;
+    color: var(--c-muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    font-weight: 300;
+    text-align: right;
+  }
+
+  /* ─── TABS ─── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--c-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    transition: color 0.3s;
+  }
+
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--c-accent);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+
+  .tab-btn.active {
+    color: var(--c-white);
+  }
+
+  .tab-btn.active::after {
+    transform: scaleX(1);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ─────────────────────────────────────────────
+     SITE 1 — PRODUCT (WATER BOTTLE)
+  ───────────────────────────────────────────── */
+  .product-site {
+    background: #f0ede8;
+    color: #1a1a1a;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .p-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    background: #f0ede8;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .p-logo {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: #1a1a1a;
+  }
+
+  .p-nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .p-nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .p-nav-links a:hover { color: #1a1a1a; }
+
+  .p-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 85vh;
+    align-items: center;
+  }
+
+  .p-hero-text {
+    padding: 4rem 3rem 4rem 4rem;
+  }
+
+  .p-tag {
+    display: inline-block;
+    background: #1a1a1a;
+    color: #f0ede8;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .p-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    line-height: 1.05;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+  }
+
+  .p-heading em {
+    font-style: italic;
+    color: #3a7ca5;
+  }
+
+  .p-body {
+    color: #666;
+    line-height: 1.8;
+    max-width: 400px;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+  }
+
+  .p-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .p-btn-primary {
+    background: #1a1a1a;
+    color: #f0ede8;
+    border: none;
+    padding: 0.9rem 2.2rem;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .p-btn-primary:hover { background: #333; transform: translateY(-1px); }
+
+  .p-btn-outline {
+    background: transparent;
+    color: #1a1a1a;
+    border: 1.5px solid rgba(0,0,0,0.2);
+    padding: 0.9rem 2.2rem;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .p-btn-outline:hover { border-color: #1a1a1a; transform: translateY(-1px); }
+
+  .p-visual {
+    background: linear-gradient(160deg, #d0e8f5 0%, #b8d9ef 40%, #a8c8e0 100%);
+    height: 100%;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .p-visual::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    top: -80px;
+    right: -80px;
+  }
+
+  /* SVG water bottle */
+  .bottle-svg {
+    width: 200px;
+    filter: drop-shadow(0 30px 60px rgba(0,80,150,0.25));
+    animation: bottleFloat 4s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  @keyframes bottleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+
+  .p-stats {
+    display: flex;
+    gap: 3rem;
+    padding: 2rem 4rem;
+    background: #1a1a1a;
+    color: #f0ede8;
+  }
+
+  .p-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .p-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: #a8d4f0;
+  }
+
+  .p-stat-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Color picker */
+  .p-colors {
+    padding: 3rem 4rem;
+  }
+
+  .p-colors h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 1.5rem;
+  }
+
+  .color-swatches {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .swatch {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 3px solid transparent;
+  }
+
+  .swatch:hover, .swatch.active {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 3px #f0ede8, 0 0 0 5px #1a1a1a;
+  }
+
+  /* ─────────────────────────────────────────────
+     SITE 2 — RESTAURANT
+  ───────────────────────────────────────────── */
+  .restaurant-site {
+    background: #0e0b08;
+    color: #f5ede0;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  .r-hero {
+    min-height: 80vh;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .r-hero-img {
+    height: 80vh;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800"><rect fill="%23221a10" width="600" height="800"/><ellipse cx="300" cy="300" rx="220" ry="160" fill="%23362a18"/><circle cx="200" cy="250" r="80" fill="%234a3520"/><circle cx="380" cy="310" r="60" fill="%23563d22"/><circle cx="300" cy="400" r="100" fill="%23402e18"/><rect x="150" y="450" width="300" height="200" rx="8" fill="%232a1e0e"/><text x="300" y="560" text-anchor="middle" fill="%23c8a060" font-size="80" font-family="serif">🍽</text></svg>') center/cover;
+    position: relative;
+  }
+
+  .r-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #0e0b08 0%, transparent 30%);
+  }
+
+  .r-food-illustration {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .r-hero-content {
+    padding: 4rem;
+    z-index: 2;
+  }
+
+  .r-eyebrow {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: #c8a060;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .r-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 6vw, 6rem);
+    line-height: 0.9;
+    color: #f5ede0;
+    margin-bottom: 1.5rem;
+  }
+
+  .r-sub {
+    color: rgba(245,237,224,0.5);
+    font-weight: 300;
+    line-height: 1.8;
+    max-width: 400px;
+    margin-bottom: 2.5rem;
+    font-size: 0.95rem;
+  }
+
+  .r-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .r-divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(200,160,96,0.3);
+  }
+
+  .r-divider-icon {
+    color: #c8a060;
+    font-size: 1rem;
+  }
+
+  .r-btn {
+    background: #c8a060;
+    color: #0e0b08;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    margin-right: 1rem;
+  }
+
+  .r-btn:hover { background: #dab870; transform: translateY(-1px); }
+
+  .r-btn-ghost {
+    background: transparent;
+    color: #f5ede0;
+    border: 1px solid rgba(245,237,224,0.2);
+    padding: 1rem 2.5rem;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .r-btn-ghost:hover { border-color: rgba(245,237,224,0.5); }
+
+  .r-menu {
+    padding: 4rem;
+    background: #0e0b08;
+  }
+
+  .r-menu-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #f5ede0;
+    margin-bottom: 0.5rem;
+  }
+
+  .r-menu-sub {
+    text-align: center;
+    color: #c8a060;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 3rem;
+  }
+
+  .r-menu-cats {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .r-cat-btn {
+    background: transparent;
+    border: 1px solid rgba(200,160,96,0.3);
+    color: rgba(245,237,224,0.6);
+    padding: 0.5rem 1.2rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .r-cat-btn.active, .r-cat-btn:hover {
+    background: #c8a060;
+    border-color: #c8a060;
+    color: #0e0b08;
+  }
+
+  .r-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .r-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(200,160,96,0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .r-item:hover {
+    border-color: rgba(200,160,96,0.3);
+    transform: translateY(-2px);
+  }
+
+  .r-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .r-item-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #f5ede0;
+  }
+
+  .r-item-price {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.95rem;
+    color: #c8a060;
+  }
+
+  .r-item-desc {
+    font-size: 0.85rem;
+    color: rgba(245,237,224,0.45);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .r-item-tags {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .r-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .r-tag-veg { background: rgba(60,150,80,0.15); color: #5cb87a; }
+  .r-tag-spicy { background: rgba(200,80,50,0.15); color: #e06040; }
+  .r-tag-new { background: rgba(200,160,96,0.15); color: #c8a060; }
+
+  /* ─────────────────────────────────────────────
+     SITE 3 — AGENCY / SERVICE
+  ───────────────────────────────────────────── */
+  .agency-site {
+    background: #ffffff;
+    color: #0a0a0a;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  .a-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .a-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    color: #0a0a0a;
+  }
+
+  .a-logo span { color: #ff4a1a; }
+
+  .a-nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .a-nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .a-nav-links a:hover { color: #0a0a0a; }
+
+  .a-cta-nav {
+    background: #0a0a0a;
+    color: #fff;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .a-cta-nav:hover { background: #333; }
+
+  .a-hero {
+    padding: 7rem 4rem 5rem;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .a-hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff5f2;
+    color: #ff4a1a;
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  .a-pulse {
+    width: 7px;
+    height: 7px;
+    background: #ff4a1a;
+    border-radius: 50%;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .a-heading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 600;
+    line-height: 1.05;
+    color: #0a0a0a;
+    margin-bottom: 1.5rem;
+  }
+
+  .a-heading mark {
+    background: none;
+    color: #ff4a1a;
+    position: relative;
+  }
+
+  .a-body {
+    color: #666;
+    line-height: 1.8;
+    font-weight: 300;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+  }
+
+  .a-hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .a-btn-primary {
+    background: #ff4a1a;
+    color: #fff;
+    border: none;
+    padding: 0.95rem 2rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .a-btn-primary:hover { background: #e03a0a; transform: translateY(-1px); }
+
+  .a-btn-secondary {
+    background: #fff;
+    color: #0a0a0a;
+    border: 1.5px solid #ddd;
+    padding: 0.95rem 2rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .a-btn-secondary:hover { border-color: #aaa; }
+
+  /* dashboard mockup */
+  .a-dashboard {
+    background: #f8f8f8;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  }
+
+  .a-dash-bar {
+    background: #0a0a0a;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .a-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .a-dot-r { background: #ff5f57; }
+  .a-dot-y { background: #ffbd2e; }
+  .a-dot-g { background: #28c840; }
+
+  .a-dash-content {
+    padding: 1.5rem;
+  }
+
+  .a-dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .a-metric {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid #f0f0f0;
+  }
+
+  .a-metric-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #aaa;
+    margin-bottom: 0.4rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .a-metric-val {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0a0a0a;
+  }
+
+  .a-metric-delta {
+    font-size: 0.7rem;
+    color: #22c55e;
+    margin-top: 2px;
+  }
+
+  .a-chart-bar-container {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid #f0f0f0;
+    margin-bottom: 0.75rem;
+  }
+
+  .a-chart-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #aaa;
+    margin-bottom: 0.75rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .a-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 60px;
+  }
+
+  .a-bar {
+    flex: 1;
+    background: #ff4a1a;
+    border-radius: 3px 3px 0 0;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+
+  .a-bar:hover { opacity: 1; }
+
+  .a-services {
+    padding: 4rem;
+    background: #f8f8f8;
+    border-top: 1px solid #eee;
+  }
+
+  .a-services-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #aaa;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .a-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .a-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #eee;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+
+  .a-card:hover {
+    border-color: #ff4a1a;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(255,74,26,0.1);
+  }
+
+  .a-card-icon {
+    width: 44px;
+    height: 44px;
+    background: #fff5f2;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #ff4a1a;
+  }
+
+  .a-card-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #0a0a0a;
+  }
+
+  .a-card-body {
+    font-size: 0.85rem;
+    color: #888;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ─── FOOTER SHOWOFF ─── */
+  .showoff-footer {
+    background: var(--c-black);
+    padding: 6rem 4rem;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .showoff-footer h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--c-white);
+    margin-bottom: 1rem;
+  }
+
+  .showoff-footer p {
+    color: var(--c-muted);
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .footer-btn {
+    background: var(--c-accent);
+    color: #0a0a0a;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  .footer-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+  .made-tag {
+    margin-top: 4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .section-header { padding: 3rem 1.5rem 1.5rem; }
+    .tabs { padding: 0 1.5rem; }
+    .p-hero { grid-template-columns: 1fr; }
+    .p-visual { min-height: 50vw; }
+    .p-hero-text { padding: 2rem 1.5rem; }
+    .p-stats { padding: 1.5rem; flex-wrap: wrap; gap: 1.5rem; }
+    .p-colors { padding: 1.5rem; }
+    .r-hero { grid-template-columns: 1fr; }
+    .r-hero-img { display: none; }
+    .r-hero-content { padding: 2rem 1.5rem; }
+    .r-menu { padding: 2rem 1.5rem; }
+    .a-hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+    .a-nav { padding: 1rem 1.5rem; }
+    .a-nav-links { display: none; }
+    .a-services { padding: 2rem 1.5rem; }
+    .showoff-footer { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="dot-grid"></div>
+  <p class="hero-label">My Portfolio by Emilia S.</p>
+  <h1>MY<br>PORTFO<br><em>LIO</em></h1>
+  <p class="hero-sub">Three complete websites. Three distinct aesthetics. Built from scratch to show what modern web design can do.</p>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    scroll to explore
+  </div>
+</section>
+
+<!-- SECTION HEADER -->
+<div class="section-header reveal">
+  <div>
+    <span class="section-num">01 / 03 — Product Landing Page</span>
+    <h2 class="section-title">Clear Water<br>Bottle Co.</h2>
+  </div>
+  <p class="section-desc">A premium product landing page with color variants, animated bottle, and clean Scandinavian aesthetics.</p>
+</div>
+
+<!-- TABS for sites -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab(0)">Product Site</button>
+  <button class="tab-btn" onclick="switchTab(1)">Restaurant</button>
+  <button class="tab-btn" onclick="switchTab(2)">Agency</button>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TAB 1 — PRODUCT
+═══════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-0">
+  <div class="product-site">
+    <nav class="p-nav">
+      <div class="p-logo">FLOW°</div>
+      <button class="p-btn-primary" style="font-size:0.8rem; padding:0.6rem 1.4rem;">Shop Now</button>
+    </nav>
+
+    <div class="p-hero">
+      <div class="p-hero-text">
+        <span class="p-tag">New for 2025</span>
+        <h1 class="p-heading">Stay<br><em>Pure.</em><br>Stay Clear.</h1>
+        <p class="p-body">Our signature borosilicate glass bottle keeps your water tasting exactly as it should — nothing added, nothing lost. Designed to last a lifetime.</p>
+        <div class="p-btns">
+          <button class="p-btn-primary">Add to Cart — £34</button>
+          <button class="p-btn-outline">See the Range</button>
+        </div>
+      </div>
+
+      <div class="p-visual" id="bottleVisual">
+        <!-- Animated SVG Water Bottle -->
+        <svg class="bottle-svg" id="bottleSvg" viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg" onclick="pourEffect()">
+          <defs>
+            <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:rgba(255,255,255,0.6)"/>
+              <stop offset="30%" style="stop-color:rgba(255,255,255,0.9)"/>
+              <stop offset="60%" style="stop-color:rgba(255,255,255,0.75)"/>
+              <stop offset="100%" style="stop-color:rgba(255,255,255,0.4)"/>
+            </linearGradient>
+            <linearGradient id="waterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" id="wg1" style="stop-color:#5ba8d0;stop-opacity:0.7"/>
+              <stop offset="100%" id="wg2" style="stop-color:#3a7ca5;stop-opacity:0.85"/>
+            </linearGradient>
+            <clipPath id="bottleClip">
+              <path d="M68 100 Q60 110 55 130 L45 360 Q44 380 100 382 Q156 380 155 360 L145 130 Q140 110 132 100 Z"/>
+            </clipPath>
+          </defs>
+
+          <!-- Cap -->
+          <rect x="78" y="45" width="44" height="14" rx="4" fill="#d0d8e0"/>
+          <rect x="74" y="55" width="52" height="18" rx="6" fill="#b8c2cc"/>
+
+          <!-- Neck -->
+          <path d="M74 73 L70 100 L130 100 L126 73 Z" fill="rgba(255,255,255,0.7)" stroke="rgba(180,200,220,0.6)" stroke-width="1.5"/>
+
+          <!-- Water fill -->
+          <path id="waterFill" d="M68 100 Q60 110 55 130 L45 360 Q44 380 100 382 Q156 380 155 360 L145 130 Q140 110 132 100 Z" fill="url(#waterGrad)" clip-path="url(#bottleClip)">
+            <animateTransform attributeName="transform" type="translate" values="0,60;0,62;0,60" dur="3s" repeatCount="indefinite"/>
+          </path>
+
+          <!-- Bottle body outline -->
+          <path d="M68 100 Q60 110 55 130 L45 360 Q44 380 100 382 Q156 380 155 360 L145 130 Q140 110 132 100 Z" fill="url(#bodyGrad)" stroke="rgba(180,210,230,0.8)" stroke-width="2"/>
+
+          <!-- Highlight -->
+          <path d="M76 115 Q73 140 70 180 Q69 220 72 260" stroke="rgba(255,255,255,0.9)" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+          <!-- Measurement lines -->
+          <line x1="48" y1="220" x2="58" y2="220" stroke="rgba(100,150,200,0.4)" stroke-width="1.5"/>
+          <line x1="48" y1="270" x2="58" y2="270" stroke="rgba(100,150,200,0.4)" stroke-width="1.5"/>
+          <line x1="48" y1="320" x2="58" y2="320" stroke="rgba(100,150,200,0.4)" stroke-width="1.5"/>
+          <text x="41" y="224" font-size="9" fill="rgba(100,150,200,0.6)" text-anchor="end" font-family="'Space Mono',monospace">500</text>
+          <text x="41" y="274" font-size="9" fill="rgba(100,150,200,0.6)" text-anchor="end" font-family="'Space Mono',monospace">750</text>
+
+          <!-- Logo on bottle -->
+          <text x="100" y="195" font-size="13" fill="rgba(100,160,200,0.7)" text-anchor="middle" font-family="'Space Mono',monospace" font-weight="700">FLOW°</text>
+          <text x="100" y="212" font-size="7" fill="rgba(100,160,200,0.5)" text-anchor="middle" font-family="'Space Mono',monospace" letter-spacing="3">1000ML</text>
+        </svg>
+
+        <div style="position:absolute; bottom:2rem; text-align:center; font-size:0.7rem; color:rgba(100,150,200,0.7); font-family:'Space Mono',monospace; letter-spacing:0.1em;">CLICK TO POUR</div>
+      </div>
+    </div>
+
+    <div class="p-stats">
+      <div class="p-stat">
+        <span class="p-stat-num">1L</span>
+        <span class="p-stat-label">Capacity</span>
+      </div>
+      <div class="p-stat">
+        <span class="p-stat-num">100%</span>
+        <span class="p-stat-label">Borosilicate glass</span>
+      </div>
+      <div class="p-stat">
+        <span class="p-stat-num">∞</span>
+        <span class="p-stat-label">Lifetime guarantee</span>
+      </div>
+      <div class="p-stat">
+        <span class="p-stat-num">BPA</span>
+        <span class="p-stat-label" style="color:#5cb87a">Free</span>
+      </div>
+    </div>
+
+    <div class="p-colors">
+      <h3>Choose Your Colour</h3>
+      <div class="color-swatches">
+        <div class="swatch active" style="background:#3a7ca5;" onclick="changeColor('#5ba8d0','#3a7ca5','#d0e8f5','#b8d9ef')" title="Ocean"></div>
+        <div class="swatch" style="background:#2d7a5f;" onclick="changeColor('#4aad88','#2d7a5f','#c8eed8','#a8d8c0')" title="Forest"></div>
+        <div class="swatch" style="background:#7a3d6e;" onclick="changeColor('#b06898','#7a3d6e','#ead0e4','#d0a8c8')" title="Berry"></div>
+        <div class="swatch" style="background:#8a6020;" onclick="changeColor('#c8a050','#8a6020','#f0e0b8','#e0c890')" title="Sand"></div>
+        <div class="swatch" style="background:#555;" onclick="changeColor('#999','#555','#e8e8e8','#d0d0d0')" title="Slate"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TAB 2 — RESTAURANT
+═══════════════════════════════════════ -->
+<div class="tab-panel" id="panel-1">
+  <div class="restaurant-site">
+    <div class="r-hero">
+      <!-- Visual side: illustrated food scene -->
+      <div class="r-hero-img">
+        <div class="r-img-overlay"></div>
+        <div class="r-food-illustration">
+          <svg viewBox="0 0 400 500" width="340" xmlns="http://www.w3.org/2000/svg">
+            <!-- Table surface -->
+            <ellipse cx="200" cy="400" rx="180" ry="50" fill="#2a1e10" opacity="0.9"/>
+            <!-- Plate -->
+            <ellipse cx="200" cy="310" rx="130" ry="38" fill="#f8f0e0" opacity="0.95"/>
+            <ellipse cx="200" cy="306" rx="118" ry="33" fill="#f0e8d5" opacity="0.8"/>
+            <!-- Food: herb mound -->
+            <ellipse cx="200" cy="300" rx="70" ry="25" fill="#3a6020"/>
+            <circle cx="165" cy="292" r="18" fill="#4a7830"/>
+            <circle cx="200" cy="285" r="22" fill="#558038"/>
+            <circle cx="230" cy="290" r="16" fill="#4a7830"/>
+            <circle cx="210" cy="280" r="12" fill="#6a9848"/>
+            <!-- Protein -->
+            <ellipse cx="185" cy="298" rx="38" ry="18" fill="#c87840" opacity="0.9"/>
+            <ellipse cx="182" cy="295" rx="34" ry="14" fill="#d8885a"/>
+            <!-- Sauce drizzle -->
+            <path d="M175 290 Q200 276 220 285" stroke="#c8a060" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+            <!-- Microgreens -->
+            <line x1="198" y1="274" x2="195" y2="260" stroke="#88c048" stroke-width="1.5"/>
+            <line x1="205" y1="272" x2="210" y2="257" stroke="#88c048" stroke-width="1.5"/>
+            <line x1="212" y1="276" x2="218" y2="262" stroke="#88c048" stroke-width="1.5"/>
+            <circle cx="195" cy="260" r="3" fill="#aad860"/>
+            <circle cx="210" cy="257" r="3" fill="#aad860"/>
+            <circle cx="218" cy="262" r="3" fill="#aad860"/>
+            <!-- Wine glass -->
+            <path d="M320 360 L320 250 Q320 200 340 180 Q360 160 340 140 L300 140 Q280 160 300 180 Q320 200 320 250" stroke="#d4a060" stroke-width="1.5" fill="rgba(180,130,60,0.08)"/>
+            <ellipse cx="320" cy="360" rx="22" ry="6" fill="#c89848" opacity="0.6"/>
+            <ellipse cx="320" cy="150" rx="22" ry="7" fill="#c87840" opacity="0.3"/>
+            <!-- Fork -->
+            <line x1="100" y1="380" x2="100" y2="240" stroke="#c0a880" stroke-width="2"/>
+            <line x1="92" y1="260" x2="92" y2="240" stroke="#c0a880" stroke-width="1.5"/>
+            <line x1="100" y1="260" x2="100" y2="240" stroke="#c0a880" stroke-width="1.5"/>
+            <line x1="108" y1="260" x2="108" y2="240" stroke="#c0a880" stroke-width="1.5"/>
+            <!-- Candle -->
+            <rect x="54" y="200" width="12" height="160" rx="3" fill="#f5f0e0" opacity="0.9"/>
+            <ellipse cx="60" cy="198" rx="8" ry="5" fill="#e8e0cc"/>
+            <path d="M60 192 Q56 180 60 168 Q64 180 60 192" fill="#ff9030"/>
+            <path d="M60 192 Q58 185 60 177 Q62 185 60 192" fill="#ffe060" opacity="0.8"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="r-hero-content">
+        <p class="r-eyebrow">Est. 2019 — Manchester</p>
+        <h1 class="r-heading">EMBER<br>& ROOT</h1>
+        <div class="r-divider">
+          <div class="r-divider-line"></div>
+          <span class="r-divider-icon">✦</span>
+          <div class="r-divider-line"></div>
+        </div>
+        <p class="r-sub">Wood-fired modern British cuisine. We source from farms within 30 miles, cook with fire older than electricity, and believe that dinner should feel like a ritual.</p>
+        <div>
+          <button class="r-btn">Reserve a Table</button>
+          <button class="r-btn-ghost">View Menu</button>
+        </div>
+        <div style="margin-top:2rem; display:flex; gap:2rem;">
+          <div>
+            <div style="font-size:0.7rem; color:rgba(200,160,96,0.6); letter-spacing:0.1em; text-transform:uppercase; font-family:'Space Mono',monospace; margin-bottom:4px;">Rating</div>
+            <div style="font-family:'Playfair Display',serif; font-size:1.4rem; color:#f5ede0;">★ 4.9</div>
+          </div>
+          <div>
+            <div style="font-size:0.7rem; color:rgba(200,160,96,0.6); letter-spacing:0.1em; text-transform:uppercase; font-family:'Space Mono',monospace; margin-bottom:4px;">Reviews</div>
+            <div style="font-family:'Playfair Display',serif; font-size:1.4rem; color:#f5ede0;">840+</div>
+          </div>
+          <div>
+            <div style="font-size:0.7rem; color:rgba(200,160,96,0.6); letter-spacing:0.1em; text-transform:uppercase; font-family:'Space Mono',monospace; margin-bottom:4px;">Michelin</div>
+            <div style="font-family:'Playfair Display',serif; font-size:1.4rem; color:#c8a060;">★ Listed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="r-menu">
+      <h2 class="r-menu-title">Tonight's Menu</h2>
+      <p class="r-menu-sub">Seasonal. Handwritten. Always changing.</p>
+
+      <div class="r-menu-cats">
+        <button class="r-cat-btn active" onclick="filterMenu('all', this)">All</button>
+        <button class="r-cat-btn" onclick="filterMenu('starters', this)">Starters</button>
+        <button class="r-cat-btn" onclick="filterMenu('mains', this)">Mains</button>
+        <button class="r-cat-btn" onclick="filterMenu('desserts', this)">Desserts</button>
+      </div>
+
+      <div class="r-items" id="menuItems">
+        <div class="r-item" data-cat="starters">
+          <div class="r-item-header">
+            <span class="r-item-name">Smoked Heritage Beetroot</span>
+            <span class="r-item-price">£12</span>
+          </div>
+          <p class="r-item-desc">Cold-smoked over applewood, whipped goat's curd, toasted hazelnuts, lovage oil.</p>
+          <div class="r-item-tags"><span class="r-tag r-tag-veg">Vegetarian</span></div>
+        </div>
+        <div class="r-item" data-cat="starters">
+          <div class="r-item-header">
+            <span class="r-item-name">Hand-dived Scallop</span>
+            <span class="r-item-price">£18</span>
+          </div>
+          <p class="r-item-desc">Seared in clarified butter, celeriac purée, crispy capers, brown butter emulsion.</p>
+          <div class="r-item-tags"><span class="r-tag r-tag-new">Chef's pick</span></div>
+        </div>
+        <div class="r-item" data-cat="mains">
+          <div class="r-item-header">
+            <span class="r-item-name">28-day Aged Rib-Eye</span>
+            <span class="r-item-price">£42</span>
+          </div>
+          <p class="r-item-desc">Wood-fired over oak, bone marrow butter, chimichurri, roasted shallots, triple-cooked chips.</p>
+          <div class="r-item-tags"><span class="r-tag r-tag-new">Most popular</span></div>
+        </div>
+        <div class="r-item" data-cat="mains">
+          <div class="r-item-header">
+            <span class="r-item-name">Miso-glazed Aubergine</span>
+            <span class="r-item-price">£24</span>
+          </div>
+          <p class="r-item-desc">Charred over embers, white sesame, pickled daikon, crispy shallots, yuzu dressing.</p>
+          <div class="r-item-tags"><span class="r-tag r-tag-veg">Vegan</span><span class="r-tag r-tag-spicy">Mild heat</span></div>
+        </div>
+        <div class="r-item" data-cat="desserts">
+          <div class="r-item-header">
+            <span class="r-item-name">Valrhona Chocolate Délice</span>
+            <span class="r-item-price">£11</span>
+          </div>
+          <p class="r-item-desc">70% dark chocolate, salted caramel, honeycomb, single-malt ice cream.</p>
+          <div class="r-item-tags"><span class="r-tag r-tag-veg">Vegetarian</span></div>
+        </div>
+        <div class="r-item" data-cat="desserts">
+          <div class="r-item-header">
+            <span class="r-item-name">British Cheese Board</span>
+            <span class="r-item-price">£16</span>
+          </div>
+          <p class="r-item-desc">Selection of 4 artisan cheeses, quince paste, walnut sourdough, celery, grapes.</p>
+          <div class="r-item-tags"><span class="r-tag r-tag-veg">Vegetarian</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TAB 3 — AGENCY
+═══════════════════════════════════════ -->
+<div class="tab-panel" id="panel-2">
+  <div class="agency-site">
+    <nav class="a-nav">
+      <div class="a-logo">FORGE<span>.</span></div>
+      <ul class="a-nav-links">
+        <li><a href="#">Work</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Pricing</a></li>
+      </ul>
+      <button class="a-cta-nav">Start a Project</button>
+    </nav>
+
+    <div class="a-hero">
+      <div>
+        <div class="a-hero-label"><div class="a-pulse"></div> Now booking for Q3 2025</div>
+        <h1 class="a-heading">We build<br>digital products<br>that <mark>actually work.</mark></h1>
+        <p class="a-body">Forge is a small team of designers and developers who believe great software should be fast, clear, and built to last. No fluff. No bloat. Just product.</p>
+        <div class="a-hero-btns">
+          <button class="a-btn-primary">See our work →</button>
+          <button class="a-btn-secondary">How we work</button>
+        </div>
+
+        <div style="margin-top:3rem; display:flex; gap:2rem; flex-wrap:wrap;">
+          <div>
+            <div style="font-size:1.6rem; font-weight:700; color:#0a0a0a;">48+</div>
+            <div style="font-size:0.75rem; color:#aaa; text-transform:uppercase; letter-spacing:0.08em;">Projects shipped</div>
+          </div>
+          <div>
+            <div style="font-size:1.6rem; font-weight:700; color:#0a0a0a;">4.9★</div>
+            <div style="font-size:0.75rem; color:#aaa; text-transform:uppercase; letter-spacing:0.08em;">Avg client rating</div>
+          </div>
+          <div>
+            <div style="font-size:1.6rem; font-weight:700; color:#0a0a0a;">3 wks</div>
+            <div style="font-size:0.75rem; color:#aaa; text-transform:uppercase; letter-spacing:0.08em;">Avg turnaround</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard mockup -->
+      <div class="a-dashboard">
+        <div class="a-dash-bar">
+          <div class="a-dot a-dot-r"></div>
+          <div class="a-dot a-dot-y"></div>
+          <div class="a-dot a-dot-g"></div>
+          <span style="color:rgba(255,255,255,0.3); font-size:0.7rem; font-family:'Space Mono',monospace; margin-left:0.5rem;">forge-analytics.app</span>
+        </div>
+        <div class="a-dash-content">
+          <p style="font-size:0.7rem; color:#aaa; font-family:'Space Mono',monospace; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.75rem;">Client dashboard</p>
+          <div class="a-dash-grid">
+            <div class="a-metric">
+              <div class="a-metric-label">Revenue</div>
+              <div class="a-metric-val">£84.2k</div>
+              <div class="a-metric-delta">↑ 23% this month</div>
+            </div>
+            <div class="a-metric">
+              <div class="a-metric-label">Conversions</div>
+              <div class="a-metric-val">3.8%</div>
+              <div class="a-metric-delta">↑ 0.4pp vs last</div>
+            </div>
+            <div class="a-metric">
+              <div class="a-metric-label">Active Users</div>
+              <div class="a-metric-val">12,441</div>
+              <div class="a-metric-delta">↑ 18% MoM</div>
+            </div>
+            <div class="a-metric">
+              <div class="a-metric-label">Page Speed</div>
+              <div class="a-metric-val">98/100</div>
+              <div class="a-metric-delta" style="color:#22c55e;">Excellent</div>
+            </div>
+          </div>
+          <div class="a-chart-bar-container">
+            <div class="a-chart-label">Weekly traffic</div>
+            <div class="a-bars" id="dashBars">
+              <div class="a-bar" style="height:45%;"></div>
+              <div class="a-bar" style="height:60%; opacity:0.7;"></div>
+              <div class="a-bar" style="height:50%; opacity:0.8;"></div>
+              <div class="a-bar" style="height:80%;"></div>
+              <div class="a-bar" style="height:70%; opacity:0.75;"></div>
+              <div class="a-bar" style="height:95%;"></div>
+              <div class="a-bar" style="height:85%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:0.4rem;">
+              <span style="font-size:0.6rem; color:#ccc; font-family:'Space Mono',monospace;">Mon</span>
+              <span style="font-size:0.6rem; color:#ccc; font-family:'Space Mono',monospace;">Tue</span>
+              <span style="font-size:0.6rem; color:#ccc; font-family:'Space Mono',monospace;">Wed</span>
+              <span style="font-size:0.6rem; color:#ccc; font-family:'Space Mono',monospace;">Thu</span>
+              <span style="font-size:0.6rem; color:#ccc; font-family:'Space Mono',monospace;">Fri</span>
+              <span style="font-size:0.6rem; color:#ccc; font-family:'Space Mono',monospace;">Sat</span>
+              <span style="font-size:0.6rem; color:#ccc; font-family:'Space Mono',monospace;">Sun</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="a-services">
+      <p class="a-services-title">What we do</p>
+      <div class="a-cards">
+        <div class="a-card">
+          <div class="a-card-icon">✦</div>
+          <div class="a-card-title">Product Design</div>
+          <div class="a-card-body">UX research, wireframes, high-fidelity prototypes, and design systems that scale.</div>
+        </div>
+        <div class="a-card">
+          <div class="a-card-icon">{ }</div>
+          <div class="a-card-title">Web Development</div>
+          <div class="a-card-body">Fast, accessible, SEO-ready websites. React, Next.js, or plain HTML — we pick what fits.</div>
+        </div>
+        <div class="a-card">
+          <div class="a-card-icon">↗</div>
+          <div class="a-card-title">Analytics & CRO</div>
+          <div class="a-card-body">We track what matters and run experiments that move the needle on conversions.</div>
+        </div>
+        <div class="a-card">
+          <div class="a-card-icon">→</div>
+          <div class="a-card-title">Launch & Scale</div>
+          <div class="a-card-body">From zero to launched in weeks, with infrastructure that handles whatever comes next.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="showoff-footer reveal">
+  <h2>Three Sites.<br>Infinite Possibilities.</h2>
+  <p>Every one of these is built from scratch — different fonts, different palettes, different interactions. This is what intentional web design looks like.</p>
+  <button class="footer-btn">Let's Build Something Together</button>
+  <div class="made-tag">Made with craft — no templates, no shortcuts</div>
+</div>
+
+<script>
+  // ─── TAB SWITCHING ───
+  function switchTab(idx) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
+    document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+    // update section header
+    const headers = [
+      ['01 / 03 — Product Landing Page', 'Clear Water<br>Bottle Co.', 'A premium product landing page with color variants, animated bottle, and clean Scandinavian aesthetics.'],
+      ['02 / 03 — Restaurant Website', 'Ember<br>& Root', 'A fine-dining experience with interactive menu filtering, illustrated food art, and candlelit ambience.'],
+      ['03 / 03 — Agency / Service', 'Forge<br>Digital', 'A modern agency site with live dashboard mockup, animated metrics, and bold conversion-focused layout.']
+    ];
+    const h = headers[idx];
+    document.querySelector('.section-num').textContent = h[0];
+    document.querySelector('.section-title').innerHTML = h[1];
+    document.querySelector('.section-desc').textContent = h[2];
+  }
+
+  // ─── BOTTLE COLOR CHANGE ───
+  function changeColor(c1, c2, bg1, bg2) {
+    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelector('#wg1').style.stopColor = c1;
+    document.querySelector('#wg2').style.stopColor = c2;
+    const vis = document.getElementById('bottleVisual');
+    vis.style.background = `linear-gradient(160deg, ${bg1} 0%, ${bg2} 40%, ${c1}66 100%)`;
+  }
+
+  // ─── POUR EFFECT ───
+  function pourEffect() {
+    const bottle = document.getElementById('bottleSvg');
+    bottle.style.transform = 'rotate(-45deg) translateY(-20px)';
+    bottle.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+    setTimeout(() => {
+      bottle.style.transform = '';
+    }, 1200);
+  }
+
+  // ─── MENU FILTER ───
+  function filterMenu(cat, btn) {
+    document.querySelectorAll('.r-cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.r-item').forEach(item => {
+      const show = cat === 'all' || item.dataset.cat === cat;
+      item.style.display = show ? '' : 'none';
+      if (show) {
+        item.style.animation = 'none';
+        item.offsetHeight;
+        item.style.animation = 'fadeUp 0.4s forwards';
+      }
+    });
+  }
+
+  // ─── SCROLL REVEAL ───
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  reveals.forEach(r => obs.observe(r));
+
+  // ─── ANIMATED BAR CHART ───
+  function animateBars() {
+    const bars = document.querySelectorAll('.a-bar');
+    bars.forEach((bar, i) => {
+      const heights = [45, 60, 50, 80, 70, 95, 85];
+      const target = heights[i];
+      bar.style.height = '0%';
+      setTimeout(() => {
+        bar.style.transition = `height 0.6s cubic-bezier(0.34,1.56,0.64,1)`;
+        bar.style.height = target + '%';
+      }, i * 80 + 200);
+    });
+  }
+
+  // Trigger bar animation when agency tab is visible
+  const agencyObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) animateBars(); });
+  }, { threshold: 0.3 });
+  const dashBars = document.getElementById('dashBars');
+  if (dashBars) agencyObs.observe(dashBars);
+
+  // Tab click also triggers bars for agency
+  document.querySelectorAll('.tab-btn')[2].addEventListener('click', () => {
+    setTimeout(animateBars, 100);
+  });
+</script>
+</body>
+</html>
